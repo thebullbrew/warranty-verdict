@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Warranty Verdict — Home Warranty vs. Self-Insure</title>
+<meta name="description" content="Price a home warranty honestly: premium, service fees, denial risk and coverage caps vs. just paying for your own repairs.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
+<meta name="theme-color" content="#07080A">
+<style>
+  :root{
+    --bg:#07080A; --surface:#0E1013; --surface2:#111419;
+    --text:#F5F3EC; --muted:#9A978C; --faint:#5C5A52;
+    --accent:#E3C878; --accent-dim:#8A7A48;
+    --line:#2A2E35; --line-soft:#1B1E24;
+    --bad:#C96A5A; --good:#9DBE8C;
+    --serif:Georgia,'Times New Roman',serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--serif);line-height:1.55;padding:0 20px 90px}
+  .wrap{max-width:1060px;margin:0 auto}
+  header{padding:84px 0 54px;text-align:left;border-bottom:1px solid var(--line-soft)}
+  .eyebrow{font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--faint);margin-bottom:26px}
+  h1{font-size:clamp(44px,8vw,84px);font-weight:400;line-height:1.02;letter-spacing:-.01em}
+  h1 em{font-style:italic;color:var(--accent)}
+  .sub{margin-top:26px;font-size:clamp(16px,2.4vw,20px);color:var(--muted);max-width:640px;font-style:italic}
+  section{padding:58px 0 6px}
+  h2{font-size:13px;letter-spacing:.34em;text-transform:uppercase;color:var(--faint);font-weight:400;margin-bottom:30px}
+  h2 b{color:var(--text);font-weight:400}
+  .presets{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:8px}
+  .preset{background:transparent;border:1px solid var(--line);color:var(--muted);font-family:var(--serif);
+    font-size:14px;padding:10px 18px;cursor:pointer;letter-spacing:.04em;transition:all .15s}
+  .preset:hover{border-color:var(--accent-dim);color:var(--text)}
+  .preset.on{border-color:var(--accent);color:var(--accent)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 44px}
+  @media(max-width:720px){.grid{grid-template-columns:1fr}}
+  .field{padding:16px 0;border-bottom:1px solid var(--line-soft)}
+  .field label{display:flex;justify-content:space-between;align-items:baseline;font-size:15px;color:var(--muted);margin-bottom:10px}
+  .field label output{font-size:24px;color:var(--text);font-variant-numeric:tabular-nums}
+  .field label output .u{font-size:13px;color:var(--faint)}
+  input[type=range]{width:100%;accent-color:var(--accent);height:26px;cursor:pointer;background:transparent}
+  input[type=number]{width:100%;background:var(--surface);border:1px solid var(--line);color:var(--text);
+    font-family:var(--serif);font-size:20px;padding:10px 14px;font-variant-numeric:tabular-nums}
+  input[type=number]:focus{outline:none;border-color:var(--accent-dim)}
+  .hint{font-size:13px;color:var(--faint);font-style:italic;margin-top:6px}
+  /* verdict */
+  .verdict{padding:70px 0 10px;text-align:left}
+  .seal{display:inline-block;border:1px solid var(--accent);color:var(--accent);border-radius:50%;
+    width:172px;height:172px;line-height:1.25;text-align:center;padding-top:52px;font-size:19px;
+    letter-spacing:.14em;text-transform:uppercase;vertical-align:top;margin:6px 26px 20px 0}
+  .seal small{display:block;font-size:10px;letter-spacing:.3em;color:var(--accent-dim);margin-top:8px}
+  .vtext{display:inline-block;vertical-align:top;max-width:640px}
+  .vbig{font-size:clamp(30px,5vw,46px);line-height:1.15;font-weight:400}
+  .vbig em{font-style:italic;color:var(--accent)}
+  .vnote{margin-top:16px;color:var(--muted);font-size:17px;max-width:560px}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--line-soft);
+    border:1px solid var(--line-soft);margin-top:44px}
+  .stat{background:var(--surface);padding:26px 24px}
+  .stat .k{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--faint);margin-bottom:12px}
+  .stat .v{font-size:34px;font-variant-numeric:tabular-nums;line-height:1.05}
+  .stat .v.gold{color:var(--accent)}
+  .stat .d{font-size:13.5px;color:var(--muted);margin-top:8px;font-style:italic}
+  /* anatomy bar */
+  .bar{display:flex;height:34px;border:1px solid var(--line);overflow:hidden;margin-top:14px}
+  .bar div{height:100%}
+  .legend{display:flex;flex-wrap:wrap;gap:8px 30px;margin-top:14px;font-size:14px;color:var(--muted)}
+  .legend i{display:inline-block;width:11px;height:11px;margin-right:8px;vertical-align:-1px}
+  /* tables */
+  table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+  th{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--faint);font-weight:400;
+    text-align:right;padding:12px 10px;border-bottom:1px solid var(--line)}
+  th:first-child{text-align:left}
+  td{padding:11px 10px;border-bottom:1px solid var(--line-soft);text-align:right;font-size:16.5px}
+  td:first-child{text-align:left;color:var(--muted)}
+  tr.win td{color:var(--accent)}
+  tr.win td:first-child{color:var(--accent)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:54px}
+  @media(max-width:820px){.two{grid-template-columns:1fr}}
+  /* ledger */
+  .ledger{border-top:1px solid var(--line)}
+  .lrow{display:flex;justify-content:space-between;gap:20px;padding:13px 2px;border-bottom:1px solid var(--line-soft);font-size:16.5px}
+  .lrow span:first-child{color:var(--muted)}
+  .lrow span:last-child{font-variant-numeric:tabular-nums;white-space:nowrap}
+  .lrow.total{font-size:19px}
+  .lrow.total span:first-child{color:var(--text)}
+  .lrow.total span:last-child{color:var(--accent)}
+  /* actions */
+  .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
+  button.act{background:var(--accent);color:#0A0A08;border:none;font-family:var(--serif);font-size:15.5px;
+    padding:13px 26px;cursor:pointer;letter-spacing:.05em}
+  button.act.ghost{background:transparent;color:var(--muted);border:1px solid var(--line)}
+  button.act.ghost:hover{color:var(--text);border-color:var(--accent-dim)}
+  .saved{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px}
+  .chip{border:1px solid var(--line);padding:8px 14px;font-size:14px;color:var(--muted);cursor:pointer;background:transparent;font-family:var(--serif)}
+  .chip:hover{color:var(--accent);border-color:var(--accent-dim)}
+  .chip b{color:var(--faint);font-weight:400;margin-left:8px}
+  .method{color:var(--muted);font-size:16.5px;max-width:760px}
+  .method p{margin-bottom:16px}
+  .method em{color:var(--text)}
+  footer{margin-top:80px;padding-top:26px;border-top:1px solid var(--line-soft);color:var(--faint);font-size:13.5px;font-style:italic}
+  .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--surface2);
+    border:1px solid var(--accent-dim);color:var(--text);padding:12px 24px;font-size:15px;opacity:0;pointer-events:none;transition:opacity .25s}
+  .toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">A Daily Tool · For Homeowners &amp; Landlords</div>
+  <h1>The Warranty<br><em>Verdict</em></h1>
+  <p class="sub">A home warranty is not protection. It is a bet — premium against repairs, with a service fee, a coverage cap, and a claims department paid to say no. This prices the bet honestly, against the oldest warranty there is: your own reserve fund.</p>
+</header>
+
+<section>
+  <h2><b>Start</b> · Pick a house like yours</h2>
+  <div class="presets" id="presets"></div>
+</section>
+
+<section>
+  <h2><b>The Contract</b> · What the warranty actually says</h2>
+  <div class="grid">
+    <div class="field"><label>Annual premium <output id="o-premium"></output></label>
+      <input type="number" id="premium" min="0" step="10" value="550">
+      <div class="hint">What the plan costs per year, before a single claim.</div></div>
+    <div class="field"><label>Service fee per claim <output id="o-fee"></output></label>
+      <input type="number" id="fee" min="0" step="5" value="100">
+      <div class="hint">The “trade call” fee you pay every time they send someone.</div></div>
+    <div class="field"><label>Coverage cap per claim <output id="o-cap"></output></label>
+      <input type="number" id="cap" min="0" step="50" value="1500">
+      <div class="hint">The most they will pay on one repair. Anything above it is yours.</div></div>
+    <div class="field"><label>Claims denied or short-paid <output id="o-denial"></output></label>
+      <input type="range" id="denial" min="0" max="60" step="1" value="20">
+      <div class="hint">“Pre-existing condition.” “Improper maintenance.” Be honest — 15–30% is a fair working range.</div></div>
+  </div>
+</section>
+
+<section>
+  <h2><b>The House</b> · What actually breaks</h2>
+  <div class="grid">
+    <div class="field"><label>Repairs you'd claim per year <output id="o-claims"></output></label>
+      <input type="range" id="claims" min="0" max="4" step="0.25" value="1.25">
+      <div class="hint">HVAC, plumbing, appliances, electrical — the claimable kind, not lightbulbs.</div></div>
+    <div class="field"><label>Average repair bill <output id="o-bill"></output></label>
+      <input type="number" id="bill" min="0" step="25" value="650">
+      <div class="hint">What a real contractor charges for that repair, parts and labor.</div></div>
+    <div class="field"><label>Hours of hassle per claim <output id="o-hassle"></output></label>
+      <input type="range" id="hassle" min="0" max="10" step="0.5" value="3">
+      <div class="hint">Hold music, scheduling windows, the second visit. Warranty claims are slow.</div></div>
+    <div class="field"><label>Your time is worth <output id="o-hourly"></output></label>
+      <input type="number" id="hourly" min="0" step="5" value="40">
+      <div class="hint">Per hour. Self-insuring costs about one hour of scheduling per repair — already counted.</div></div>
+    <div class="field"><label>Years you'll hold the plan <output id="o-years"></output></label>
+      <input type="range" id="years" min="1" max="15" step="1" value="5">
+      <div class="hint">Warranties are renewed on hope. Price the whole hold, not year one.</div></div>
+  </div>
+</section>
+
+<div class="verdict">
+  <h2><b>The Verdict</b></h2>
+  <div>
+    <div class="seal" id="seal">—<small>The Verdict</small></div>
+    <div class="vtext">
+      <div class="vbig" id="vbig">—</div>
+      <p class="vnote" id="vnote">—</p>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="k">Warranty path · total</div><div class="v gold" id="s-war">—</div><div class="d">Premium + fees + what they don't cover, over the hold</div></div>
+    <div class="stat"><div class="k">Self-insure · total</div><div class="v" id="s-self">—</div><div class="d">Every repair paid from your own pocket, no middleman</div></div>
+    <div class="stat"><div class="k">The gap</div><div class="v" id="s-gap">—</div><div class="d" id="s-gapd">—</div></div>
+    <div class="stat"><div class="k">Break-even claims</div><div class="v" id="s-be">—</div><div class="d">Repairs per year you'd need before the warranty even ties</div></div>
+    <div class="stat"><div class="k">Break-even premium</div><div class="v" id="s-bep">—</div><div class="d">The annual price at which this plan would be a fair bet</div></div>
+    <div class="stat"><div class="k">They pay back</div><div class="v" id="s-cover">—</div><div class="d">Expected claims paid per $1 of premium you send them</div></div>
+  </div>
+</div>
+
+<section>
+  <h2><b>Where the warranty money goes</b> · Over the full hold</h2>
+  <div class="bar" id="bar"></div>
+  <div class="legend" id="legend"></div>
+</section>
+
+<section>
+  <h2><b>The Ledger</b> · Expected cost, per year</h2>
+  <div class="two">
+    <div>
+      <div class="ledger" id="led-war"></div>
+    </div>
+    <div>
+      <div class="ledger" id="led-self"></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><b>Sensitivity</b> · When does the answer change?</h2>
+  <div class="two">
+    <div>
+      <table id="t-claims"><thead><tr><th>Claims / yr</th><th>Warranty</th><th>Self-insure</th><th>Winner</th></tr></thead><tbody></tbody></table>
+    </div>
+    <div>
+      <table id="t-denial"><thead><tr><th>Denied</th><th>Warranty</th><th>Self-insure</th><th>Winner</th></tr></thead><tbody></tbody></table>
+    </div>
+  </div>
+  <p class="hint" style="margin-top:14px">Totals over your full hold, everything else held at your inputs. Gold row = your current setting.</p>
+</section>
+
+<section>
+  <h2><b>Save it</b></h2>
+  <div class="actions">
+    <button class="act" id="save">Save this case</button>
+    <button class="act ghost" id="copy">Copy summary</button>
+  </div>
+  <div class="saved" id="saved"></div>
+</section>
+
+<section>
+  <h2><b>The Method</b></h2>
+  <div class="method">
+    <p>A warranty claim has three outcomes, and the brochure only mentions one. <em>Approved:</em> you pay the service fee, plus anything above the per-claim cap. <em>Denied or short-paid:</em> you pay the fee's cousin — the full contractor bill — after weeks of waiting. <em>Either way:</em> you pay in hours, because their contractor works on their schedule, not yours.</p>
+    <p>This tool prices all three, every year of the hold, and sets the total against the unglamorous alternative: <em>keep the premium, fund a reserve, hire your own contractor in one phone call.</em> Self-insuring still costs an hour of scheduling per repair — that is counted too.</p>
+    <p>The honest exception: a warranty can be worth it in year one of owning an old house with tired systems and an empty reserve — as cash-flow insurance, not as a bargain. If the math says buy it, buy it with your eyes open, and re-run this the day a major system gets replaced. New systems are the real warranty.</p>
+  </div>
+</section>
+
+<footer>The Warranty Verdict · A daily finance &amp; real-estate tool · Expected values, not promises — your denial rate may vary, which is rather the point.</footer>
+
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+var $ = function(id){ return document.getElementById(id); };
+var FIELDS = ["premium","fee","cap","denial","claims","bill","hassle","hourly","years"];
+var PRESETS = [
+  {name:"Newer Build", v:{premium:450, fee:85, cap:1500, denial:15, claims:0.5, bill:500, hassle:3, hourly:40, years:5}},
+  {name:"Aging Systems", v:{premium:550, fee:100, cap:1500, denial:20, claims:1.25, bill:650, hassle:3, hourly:40, years:5}},
+  {name:"Rental Workhorse", v:{premium:625, fee:100, cap:1250, denial:25, claims:2, bill:700, hassle:2, hourly:30, years:5}},
+  {name:"Old House, Big Systems", v:{premium:700, fee:125, cap:1500, denial:30, claims:1.75, bill:1100, hassle:4, hourly:40, years:5}}
+];
+function money(n){ var s = Math.abs(n) >= 100 ? Math.round(n) : Math.round(n*10)/10;
+  return (n<0?"-$":"$") + Math.abs(s).toLocaleString("en-US"); }
+function read(){
+  var o = {};
+  FIELDS.forEach(function(f){ o[f] = parseFloat($(f).value) || 0; });
+  return o;
+}
+function model(o){
+  var d = o.denial/100;
+  var covered = Math.min(o.bill, o.cap);              // most the plan pays on an approved claim
+  var overCap = Math.max(0, o.bill - o.cap);          // yours even when approved
+  // expected out-of-pocket per claim on the warranty path
+  var perClaimWar = (1-d)*(o.fee + overCap) + d*o.bill;
+  var perClaimSelf = o.bill;
+  var payoutsPerClaim = (1-d)*Math.max(0, covered - 0); // plan pays covered amount on approval (fee is yours, separate)
+  var warYear = o.premium + o.claims*perClaimWar + o.claims*o.hassle*o.hourly;
+  var selfYear = o.claims*perClaimSelf + o.claims*1*o.hourly;
+  return {
+    warYear: warYear, selfYear: selfYear,
+    warTotal: warYear*o.years, selfTotal: selfYear*o.years,
+    payoutsTotal: o.claims*payoutsPerClaim*o.years,
+    premiumTotal: o.premium*o.years,
+    perClaimWar: perClaimWar
+  };
+}
+function breakevenClaims(o){
+  // solve claims where warTotal == selfTotal (linear in claims)
+  var d = o.denial/100;
+  var perClaimWar = (1-d)*(o.fee + Math.max(0,o.bill-o.cap)) + d*o.bill + o.hassle*o.hourly;
+  var perClaimSelf = o.bill + o.hourly;
+  var denom = perClaimSelf - perClaimWar;
+  if (denom <= 0) return null; // warranty never catches up
+  return o.premium / denom;
+}
+function breakevenPremium(o){
+  var m = model(o);
+  var warNoPremium = m.warTotal - o.premium*o.years;
+  return Math.max(0, (m.selfTotal - warNoPremium) / o.years);
+}
+var last = null;
+function render(){
+  var o = read(), m = model(o);
+  last = {o:o, m:m};
+  $("o-premium").innerHTML = money(o.premium) + ' <span class="u">/yr</span>';
+  $("o-fee").innerHTML = money(o.fee);
+  $("o-cap").innerHTML = money(o.cap);
+  $("o-denial").innerHTML = o.denial + '<span class="u">%</span>';
+  $("o-claims").innerHTML = o.claims.toFixed(2).replace(/\.?0+$/,"") + ' <span class="u">/yr</span>';
+  $("o-bill").innerHTML = money(o.bill);
+  $("o-hassle").innerHTML = o.hassle + ' <span class="u">hrs</span>';
+  $("o-hourly").innerHTML = money(o.hourly) + ' <span class="u">/hr</span>';
+  $("o-years").innerHTML = o.years + ' <span class="u">yrs</span>';
+
+  var diff = m.selfTotal - m.warTotal; // positive = warranty cheaper
+  var band = Math.max(400, 0.05*m.selfTotal);
+  var seal, vbig, vnote;
+  if (o.denial >= 35){
+    seal = "Paper<br>Shield";
+    vbig = "A contract that says no <em>a third of the time</em> is not insurance.";
+    vnote = "At a " + o.denial + "% denial rate the fine print is the product. Whatever the totals say, you are buying paperwork — fund the reserve instead and keep the phone number of a contractor who answers.";
+  } else if (diff > band){
+    seal = "Buy<br>It";
+    vbig = "The bet pays — <em>" + money(diff) + "</em> in your favor over " + o.years + " years.";
+    vnote = "Enough breaks, at high enough bills, that even after fees, caps and denials the warranty path comes out cheaper. Buy it as cash-flow insurance, document every maintenance record, and re-run this when a big system gets replaced.";
+  } else if (diff < -band){
+    seal = "Self-<br>Insure";
+    vbig = "Keep the premium. The warranty costs you <em>" + money(-diff) + "</em> over " + o.years + " years.";
+    vnote = "Your expected repairs don't justify the premium, the fees and the hold music. Put the premium in a reserve each year, hire your own contractor, and let the claims department keep its scripts.";
+  } else {
+    seal = "Close<br>Call";
+    vbig = "A coin flip — the two paths land within <em>" + money(Math.abs(diff)) + "</em> of each other.";
+    vnote = "The math won't decide this one. If your reserve is thin and one $2,000 surprise would hurt, the warranty buys sleep. If you have cash and a good contractor, keep the premium.";
+  }
+  $("seal").innerHTML = seal + "<small>The Verdict</small>";
+  $("vbig").innerHTML = vbig;
+  $("vnote").textContent = vnote;
+
+  $("s-war").textContent = money(m.warTotal);
+  $("s-self").textContent = money(m.selfTotal);
+  $("s-gap").textContent = money(Math.abs(diff));
+  $("s-gapd").textContent = diff>=0 ? "Warranty path is cheaper over the hold" : "Self-insuring is cheaper over the hold";
+  var be = breakevenClaims(o);
+  $("s-be").textContent = be === null ? "Never" : be.toFixed(2).replace(/\.?0+$/,"") + " /yr";
+  $("s-bep").textContent = money(breakevenPremium(o)) + "/yr";
+  var cover = m.premiumTotal > 0 ? m.payoutsTotal / m.premiumTotal : 0;
+  $("s-cover").textContent = "$" + cover.toFixed(2);
+
+  // anatomy bar: of all warranty-path dollars: premiums kept net of payouts / payouts returned / your residual claim costs+hassle
+  var residual = m.warTotal - m.premiumTotal;
+  var kept = Math.max(0, m.premiumTotal - m.payoutsTotal);
+  var returned = Math.min(m.payoutsTotal, m.premiumTotal + residual); // payouts shown against total outflow
+  var totalOut = m.premiumTotal + residual;
+  var paidBack = m.payoutsTotal;
+  var denom = totalOut + paidBack;
+  function pct(x){ return denom>0 ? Math.max(0, x/denom*100) : 0; }
+  $("bar").innerHTML =
+    '<div style="background:#E3C878;width:'+pct(paidBack)+'%"></div>' +
+    '<div style="background:#5C5140;width:'+pct(Math.max(0,m.premiumTotal-paidBack))+'%"></div>' +
+    '<div style="background:#2A2E35;width:'+pct(residual)+'%"></div>';
+  $("legend").innerHTML =
+    '<span><i style="background:#E3C878"></i>Repairs they actually pay for · ' + money(paidBack) + '</span>' +
+    '<span><i style="background:#5C5140"></i>Premium they keep · ' + money(Math.max(0, m.premiumTotal - paidBack)) + '</span>' +
+    '<span><i style="background:#2A2E35"></i>Still yours: fees, caps, denials, hassle · ' + money(residual) + '</span>';
+
+  // ledgers (per year)
+  var d = o.denial/100;
+  function row(k,v,tot){ return '<div class="lrow'+(tot?" total":"")+'"><span>'+k+'</span><span>'+v+'</span></div>'; }
+  $("led-war").innerHTML =
+    row("Premium", money(o.premium)) +
+    row("Service fees (approved claims)", money(o.claims*(1-d)*o.fee)) +
+    row("Denied claims — full bill lands on you", money(o.claims*d*o.bill)) +
+    row("Above the cap, approved claims", money(o.claims*(1-d)*Math.max(0,o.bill-o.cap))) +
+    row("Your hours on hold", money(o.claims*o.hassle*o.hourly)) +
+    row("Warranty path · per year", money(m.warYear), true);
+  $("led-self").innerHTML =
+    row("Every repair, paid direct", money(o.claims*o.bill)) +
+    row("Your scheduling time (1 hr / repair)", money(o.claims*o.hourly)) +
+    row("Premium", "$0") +
+    row("Fees, caps, denials", "$0") +
+    row("Hold music", "$0") +
+    row("Self-insure · per year", money(m.selfYear), true);
+
+  // sensitivity tables
+  function fillClaims(){
+    var rows = "", vals = [0,0.5,1,1.5,2,2.5,3];
+    vals.forEach(function(c){
+      var oo = Object.assign({}, o, {claims:c});
+      var mm = model(oo);
+      var win = Math.abs(mm.selfTotal-mm.warTotal) < 1 ? "Tie" : (mm.warTotal < mm.selfTotal ? "Warranty" : "Self-insure");
+      rows += '<tr class="'+(c===o.claims?"win":"")+'"><td>'+c.toFixed(1)+'</td><td>'+money(mm.warTotal)+'</td><td>'+money(mm.selfTotal)+'</td><td>'+win+'</td></tr>';
+    });
+    document.querySelector("#t-claims tbody").innerHTML = rows;
+  }
+  function fillDenial(){
+    var rows = "", vals = [0,10,20,30,40,50];
+    vals.forEach(function(dd){
+      var oo = Object.assign({}, o, {denial:dd});
+      var mm = model(oo);
+      var win = Math.abs(mm.selfTotal-mm.warTotal) < 1 ? "Tie" : (mm.warTotal < mm.selfTotal ? "Warranty" : "Self-insure");
+      rows += '<tr class="'+(dd===o.denial?"win":"")+'"><td>'+dd+'%</td><td>'+money(mm.warTotal)+'</td><td>'+money(mm.selfTotal)+'</td><td>'+win+'</td></tr>';
+    });
+    document.querySelector("#t-denial tbody").innerHTML = rows;
+  }
+  fillClaims(); fillDenial();
+}
+// presets
+PRESETS.forEach(function(p, i){
+  var b = document.createElement("button");
+  b.className = "preset" + (i===1 ? " on" : "");
+  b.textContent = p.name;
+  b.addEventListener("click", function(){
+    FIELDS.forEach(function(f){ $(f).value = p.v[f]; });
+    document.querySelectorAll(".preset").forEach(function(x){ x.classList.remove("on"); });
+    b.classList.add("on");
+    render();
+  });
+  $("presets").appendChild(b);
+});
+FIELDS.forEach(function(f){ $(f).addEventListener("input", function(){
+  document.querySelectorAll(".preset").forEach(function(x){ x.classList.remove("on"); });
+  render();
+}); });
+// save / load
+function toast(msg){ var t=$("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(function(){ t.classList.remove("show"); }, 2200); }
+function savedList(){ try { return JSON.parse(localStorage.getItem("warranty-verdict-cases")||"[]"); } catch(e){ return []; } }
+function drawSaved(){
+  var list = savedList(), box = $("saved"); box.innerHTML = "";
+  list.forEach(function(c, i){
+    var chip = document.createElement("button"); chip.className="chip";
+    chip.innerHTML = c.name + " · " + money(c.diff>=0?c.diff:-c.diff) + (c.diff>=0?" warranty":" self") + " <b>✕</b>";
+    chip.addEventListener("click", function(e){
+      if (e.target.tagName === "B"){ var l=savedList(); l.splice(i,1); localStorage.setItem("warranty-verdict-cases", JSON.stringify(l)); drawSaved(); return; }
+      FIELDS.forEach(function(f){ $(f).value = c.v[f]; }); render();
+    });
+    box.appendChild(chip);
+  });
+}
+$("save").addEventListener("click", function(){
+  if (!last) return;
+  var l = savedList();
+  var name = "Case " + (l.length+1) + " · " + money(last.o.premium) + "/yr, " + last.o.claims + " claims";
+  l.push({name:name, v:last.o, diff: last.m.selfTotal - last.m.warTotal});
+  localStorage.setItem("warranty-verdict-cases", JSON.stringify(l));
+  drawSaved(); toast("Saved.");
+});
+$("copy").addEventListener("click", function(){
+  if (!last) return;
+  var o=last.o, m=last.m, diff=m.selfTotal-m.warTotal;
+  var txt = "THE WARRANTY VERDICT\n" +
+    "Premium " + money(o.premium) + "/yr · fee " + money(o.fee) + " · cap " + money(o.cap) + " · denial " + o.denial + "%\n" +
+    "Claims " + o.claims + "/yr at " + money(o.bill) + " avg · hold " + o.years + " yrs\n" +
+    "Warranty path: " + money(m.warTotal) + " · Self-insure: " + money(m.selfTotal) + "\n" +
+    (diff>=0 ? "Warranty cheaper by " : "Self-insuring cheaper by ") + money(Math.abs(diff)) +
+    " · Break-even premium " + money(breakevenPremium(o)) + "/yr · They pay back $" + (m.premiumTotal>0?(m.payoutsTotal/m.premiumTotal).toFixed(2):"0") + " per $1 of premium.";
+  if (navigator.clipboard) navigator.clipboard.writeText(txt).then(function(){ toast("Summary copied."); });
+});
+render(); drawSaved();
+if ("serviceWorker" in navigator) { navigator.serviceWorker.register("sw.js").catch(function(){}); }
+</script>
+</body>
+</html>
